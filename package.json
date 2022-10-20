@@ -1,0 +1,24 @@
+{
+  "name": "nogejsits",
+  "version": "1.0.0",
+  "description": "CI/CD jenkins Docker",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./test/test.js"
+  },
+  "keywords": [
+    "ci",
+    "cd",
+    "jenkins",
+    "docker"
+  ],
+  "author": "meme",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "supertest": "^6.3.0"
+  }
+}
