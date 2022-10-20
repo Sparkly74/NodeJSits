@@ -18,7 +18,7 @@ pipeline{
         stage('Build et un push de l\'image docker'){
             steps{
                 script{
-                    def dockerImage = docker.build("nodejd:latest")
+                    def dockerImage = docker.build("nodejd:master")
                     dockerImage.push()
                 }
             }
@@ -29,7 +29,7 @@ pipeline{
                     sh 'docker stop nodejd'
                     sh 'docker rm nodejd'
                     sh 'docker rmi nodejd'
-                    sh 'docker -t nodejd:prod nodejd:latest'
+                    sh 'docker -t nodejd:prod nodejd:master'
                     sh 'docker run -d --name nodejd -p 3000:3000 nodejd'
                 }
             }
