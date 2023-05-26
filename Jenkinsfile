@@ -1,24 +1,22 @@
 pipeline{
     agent any
     stages{
-        stage('Tests'){
-            steps{
-                script{
-                    docker.image('node').inside('-u node'){
-                        sh '''
-                        echo 'Build...'
-                        npm install
-                        echo 'Test...'
-                        npm test
-                        '''
-                    }
-                }
-            }
-        }
         stage('Build Docker Image'){
             steps{
                 script{
                     def app = docker.build("nodejd:master", ".")                    
+                }
+            }
+        }
+        stage('Tests'){
+            steps{
+                script{
+                    docker.image('nodejd:master').inside{
+                        sh '''
+                        echo 'Test...'
+                        npm test
+                        '''
+                    }
                 }
             }
         }
