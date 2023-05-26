@@ -5,32 +5,36 @@ pipeline{
             steps{
                 script{
                     docker.image('node').inside{
-                        c ->
+                        sh '''
                         echo 'Build...'
-                        sh 'npm install'
+                        npm install
                         echo 'Test...'
-                        sh 'npm test'
-                        sh 'docker logs ${c.id}'
+                        npm test
+                        '''
                     }
                 }
             }
         }
-        stage('Build et un push de l\'image docker'){
+        stage('Build and Push Docker Image'){
             steps{
                 script{
-                    def dockerImage = docker.build("nodejd:master")
-                    dockerImage.push()
+                    def app = docker.build("nodejd:master", ".")
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        app.push('master')
+                    }
                 }
             }
         }
-        stage('Deploy vers l\'image'){
+        stage('Deploy Image'){
             steps{
                 script{
-                    sh 'docker stop nodejd'
-                    sh 'docker rm nodejd'
-                    sh 'docker rmi nodejd'
-                    sh 'docker -t nodejd:prod nodejd:master'
-                    sh 'docker run -d --name nodejd -p 3000:3000 nodejd'
+                    sh '''
+                    docker stop nodejd || true
+                    docker rm nodejd || true
+                    docker rmi nodejd || true
+                    docker tag nodejd:master nodejd:prod
+                    docker run -d --name nodejd -p 3000:3000 nodejd:prod
+                    '''
                 }
             }
         }
