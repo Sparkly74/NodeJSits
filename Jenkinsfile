@@ -13,7 +13,8 @@ pipeline{
                 script{
                     docker.image('nodejd:master').inside{
                         sh '''
-                        echo 'pas Test...'
+                        echo 'Test...'
+                        npm test
                         '''
                     }
                 }
