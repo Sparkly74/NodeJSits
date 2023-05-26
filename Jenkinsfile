@@ -15,13 +15,10 @@ pipeline{
                 }
             }
         }
-        stage('Build and Push Docker Image'){
+        stage('Build Docker Image'){
             steps{
                 script{
-                    def app = docker.build("nodejd:master", ".")
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        app.push('master')
-                    }
+                    def app = docker.build("nodejd:master", ".")                    
                 }
             }
         }
