@@ -4,7 +4,7 @@ pipeline{
         stage('Tests'){
             steps{
                 script{
-                    docker.image('node').inside{
+                    docker.image('node').inside('-u node'){
                         sh '''
                         echo 'Build...'
                         npm install
